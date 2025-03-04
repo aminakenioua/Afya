@@ -1,4 +1,4 @@
-package com.example.afya.model
+package com.example.afya.data.model
 
 enum class PostType(val type: String) {
     OFFER("OFFER"),

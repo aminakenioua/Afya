@@ -1,20 +1,24 @@
-package com.example.afya.viewmodel
+package com.example.afya.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.afya.model.Drug
-import com.example.afya.repository.DrugRepository
+import com.example.afya.data.model.Drug
+import com.example.afya.data.repository.DrugRepositoryImpl
+import com.example.afya.domain.usecase.GetDrugsUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 data class DrugState(
     val drugs: List<Drug> = emptyList(),
 )
 
-class DrugViewModel : ViewModel() {
+@HiltViewModel
+class DrugViewModel @Inject constructor(private val getDrugsUseCase: GetDrugsUseCase) : ViewModel() {
     private val _drugState = MutableStateFlow(DrugState())
     val drugState: StateFlow<DrugState> = _drugState.asStateFlow()
 
@@ -25,11 +29,11 @@ class DrugViewModel : ViewModel() {
     fun loadDrugs() {
         viewModelScope.launch {
 
-                delay(2000)
-                val drugs = DrugRepository.getDrugs()
+            getDrugsUseCase().collect{ drugs ->
                 _drugState.value = _drugState.value.copy(
                     drugs = drugs
                 )
+            }
 
         }
     }

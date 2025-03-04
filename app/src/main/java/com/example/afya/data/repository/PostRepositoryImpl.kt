@@ -1,11 +1,13 @@
-package com.example.afya.repository
+package com.example.afya.data.repository
 
-import com.example.afya.model.Post
-import com.example.afya.model.PostType
+import com.example.afya.data.model.Post
+import com.example.afya.data.model.PostType
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 import java.util.Date
 
-object PostRepository {
-    private val posts = listOf(
+class PostRepositoryImpl : PostRepository {
+    private val _posts = mutableListOf(
         Post(
             id = "1",
             title = "Extra Painkillers",
@@ -80,7 +82,16 @@ object PostRepository {
         )
     )
 
-    fun getPosts(): List<Post> {
-        return posts.sortedByDescending { it.createdAt }
+    private val _postFlow = MutableSharedFlow<List<Post>>(replay = 1)
+
+    init {
+        _postFlow.tryEmit(_posts.toList())
+    }
+
+    override fun getPosts(): Flow<List<Post>> = _postFlow
+
+    override suspend fun addPost(post: Post) {
+        _posts.add(post)
+        _postFlow.emit(_posts.toList())
     }
 }

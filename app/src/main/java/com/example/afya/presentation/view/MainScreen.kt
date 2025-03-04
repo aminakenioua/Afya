@@ -1,4 +1,4 @@
-package com.example.afya.view
+package com.example.afya.presentation.view
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,10 +13,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.example.afya.R
-import com.example.afya.model.Drug
-import com.example.afya.model.Post
-import com.example.afya.viewmodel.DrugViewModel
-import com.example.afya.viewmodel.PostViewModel
+import com.example.afya.data.model.Drug
+import com.example.afya.data.model.Post
+import com.example.afya.presentation.viewmodel.DrugViewModel
+import com.example.afya.presentation.viewmodel.PostViewModel
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Email

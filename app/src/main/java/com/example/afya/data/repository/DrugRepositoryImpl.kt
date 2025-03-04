@@ -1,9 +1,11 @@
-package com.example.afya.repository
+package com.example.afya.data.repository
 
-import com.example.afya.model.Drug
+import com.example.afya.data.model.Drug
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
 
-object DrugRepository {
-    private val drugs = listOf(
+class DrugRepositoryImpl : DrugRepository {
+    private val _drugs = mutableListOf(
         Drug(
             id = "1",
             name = "Ibuprofen",
@@ -42,7 +44,11 @@ object DrugRepository {
         )
     )
 
-    fun getDrugs(): List<Drug> {
-        return drugs
+    private val _drugFlow = MutableSharedFlow<List<Drug>>(replay = 1)
+
+    init {
+        _drugFlow.tryEmit(_drugs.toList())
     }
+
+    override fun getDrugs(): Flow<List<Drug>> = _drugFlow
 }
