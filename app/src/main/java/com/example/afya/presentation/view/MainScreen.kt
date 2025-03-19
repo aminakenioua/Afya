@@ -29,6 +29,7 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.ui.text.font.FontWeight
+import com.example.afya.ui.screens.AddPostScreen
 
 
 sealed class Screen(val route: String) {
@@ -37,6 +38,7 @@ sealed class Screen(val route: String) {
     object Profile : Screen("profile")
     object Messages : Screen("messages")
     object Calls : Screen("calls")
+    object AddPost : Screen("add_post")
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -122,7 +124,7 @@ fun MainScreen(
             when (currentScreen) {
                 is Screen.Posts -> PostList(
                     posts = posts.posts,
-                    onAddPost = { /* ضع الأكشن المناسب عند الضغط */ }
+                    onAddPost = { currentScreen = Screen.AddPost }
                 )
                 is Screen.Drugs -> DrugList(
                     drugs = drugs.drugs,
@@ -130,6 +132,7 @@ fun MainScreen(
                 is Screen.Profile -> ProfileScreen()
                 is Screen.Messages -> MessagesScreen()
                 is Screen.Calls -> CallsScreen()
+                is Screen.AddPost-> AddPostScreen()
             }
         }
     }
